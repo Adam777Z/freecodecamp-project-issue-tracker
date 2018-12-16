@@ -8,7 +8,7 @@
 
 var chai = require('chai');
 
-suite('Unit Tests', function(){
+suite('Unit Tests', function() {
 
 //none requiered
 
