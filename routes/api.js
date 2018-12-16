@@ -50,7 +50,6 @@ module.exports = function(app) {
       } else {
         db.db().collection('issuetracker').find(searchQuery).toArray(function(err, docs) {
           return res.json(docs);
-          // return res.json({ _id: _id, issue_title: issue_title, issue_text: issue_text, created_on: created_on, updated_on: updated_on, created_by: created_by, assigned_to: assigned_to, open: open, status_text: status_text });
         });
       }
     });
