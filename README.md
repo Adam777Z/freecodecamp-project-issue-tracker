@@ -1,7 +1,7 @@
-**freeCodeCamp** - Information Security and Quality Assurance
+**freeCodeCamp** - Information Security and Quality Assurance Project
 ------
 
-**Project Issue Tracker**
+**Issue Tracker**
 
 1) SET NODE_ENV to `test` without quotes and set DATABASE to your Mongo connection string in .env file
 2) Complete the project in `routes/api.js` or by creating a handler/controller
