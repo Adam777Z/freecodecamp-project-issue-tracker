@@ -9,7 +9,7 @@
 'use strict';
 
 var expect = require('chai').expect;
-var MongoClient = require('mongodb');
+var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function(app) {
