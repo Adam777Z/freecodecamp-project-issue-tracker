@@ -1,4 +1,4 @@
-* {
+/* * {
   margin: 0px;
   padding: 0px;
 }
@@ -12,12 +12,24 @@ body {
   padding: 5px;
   width: 60%;
   border: 2px solid black;
-}
+} */
 
 .closed {
   background-color: lightgray;
 }
 
-.id {
+/* .id {
   font-size: 10.5px;
+} */
+
+.jumbotron {
+	margin-top: 2rem;
+}
+
+code {
+	word-wrap: break-word;
+}
+
+.font-weight-semibold {
+	font-weight: 600 !important;
 }
