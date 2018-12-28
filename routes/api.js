@@ -55,11 +55,22 @@ module.exports = function(app) {
     });
   })
   .post(function(req, res) {
-    var project = req.params.project;
+    if (req.body.issue_title === undefined || req.body.issue_title === '') {
+      return res.json({ error: 'Title is required' });
+    }
     
-    let issue_title = (req.body.issue_title !== undefined ? req.body.issue_title : res.json({ error: 'Title is required' }));
-    let issue_text = (req.body.issue_text !== undefined ? req.body.issue_text : res.json({ error: 'Text is required' }));
-    let created_by = (req.body.created_by !== undefined ? req.body.created_by : res.json({ error: 'Created by is required' }));
+    if (req.body.issue_text === undefined || req.body.issue_text === '') {
+      return res.json({ error: 'Text is required' });
+    }
+    
+    if (req.body.created_by === undefined || req.body.created_by === '') {
+      return res.json({ error: 'Created by is required' });
+    }
+    
+    var project = req.params.project;
+    let issue_title = req.body.issue_title;
+    let issue_text = req.body.issue_text;
+    let created_by = req.body.created_by;
     let assigned_to = (req.body.assigned_to !== undefined ? req.body.assigned_to : '');
     let status_text = (req.body.status_text !== undefined ? req.body.status_text : '');
     
@@ -89,13 +100,16 @@ module.exports = function(app) {
     });
   })
   .put(function(req, res) {
-    var project = req.params.project;
-    
-    let _id = (req.body._id !== undefined ? req.body._id : res.json({ error: '_id is required' }));
+    if (req.body._id === undefined || req.body._id === '') {
+      return res.json({ error: '_id is required' });
+    }
     
     if (req.body.issue_title === undefined && req.body.issue_text === undefined && req.body.created_by === undefined && req.body.assigned_to === undefined && req.body.status_text === undefined && req.body.open === undefined) {
       return res.json({ error: 'no update field sent' });
     }
+    
+    var project = req.params.project;
+    let _id = req.body._id;
     
     let issue_title = (req.body.issue_title !== undefined ? req.body.issue_title : '');
     let issue_text = (req.body.issue_text !== undefined ? req.body.issue_text : '');
@@ -142,7 +156,7 @@ module.exports = function(app) {
   .delete(function(req, res) {
     var project = req.params.project;
     
-    if (req.body._id === undefined) {
+    if (req.body._id === undefined || req.body._id === '') {
       return res.json({ error: '_id error' });
     }
     
