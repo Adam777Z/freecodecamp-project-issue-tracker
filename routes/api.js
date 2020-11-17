@@ -43,7 +43,7 @@ module.exports = function(app) {
       searchQuery['open'] = false;
     }
     
-    MongoClient.connect(process.env.DATABASE, { useNewUrlParser: true }, function(err, db) {
+    MongoClient.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
       if (err) {
         // console.log('Database error: ' + err);
         return res.json({ error: 'error' });
@@ -76,7 +76,7 @@ module.exports = function(app) {
     
     let date = new Date();
     
-    MongoClient.connect(process.env.DATABASE, { useNewUrlParser: true }, function(err, db) {
+    MongoClient.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
       if (err) {
         // console.log('Database error: ' + err);
         return res.json({ error: 'error' });
@@ -120,7 +120,7 @@ module.exports = function(app) {
     
     let date = new Date();
     
-    MongoClient.connect(process.env.DATABASE, { useNewUrlParser: true }, function(err, db) {
+    MongoClient.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
       if (err) {
         // console.log('Database error: ' + err);
         return res.json({ error: 'error' });
@@ -162,7 +162,7 @@ module.exports = function(app) {
     
     let _id = req.body._id;
     
-    MongoClient.connect(process.env.DATABASE, { useNewUrlParser: true }, function(err, db) {
+    MongoClient.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
       if (err) {
         // console.log('Database error: ' + err);
         return res.json({ error: 'error' });
