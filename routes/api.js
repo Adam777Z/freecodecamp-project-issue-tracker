@@ -101,16 +101,29 @@ module.exports = function(app) {
     });
   })
   .put(function(req, res) {
-    if (req.body._id === undefined || req.body._id === '') {
-      return res.json({ error: '_id is required' });
-    }
-
-    if (req.body.issue_title === undefined && req.body.issue_text === undefined && req.body.created_by === undefined && req.body.assigned_to === undefined && req.body.status_text === undefined && req.body.open === undefined) {
-      return res.json({ error: 'no update field sent' });
-    }
-
     var project = req.params.project;
+    
+    if (req.body._id === undefined || req.body._id === '') {
+      return res.json({ error: 'missing _id' });
+    }
+
     let _id = req.body._id;
+    
+    if (
+      req.body.issue_title === undefined
+      &&
+      req.body.issue_text === undefined
+      &&
+      req.body.created_by === undefined
+      &&
+      req.body.assigned_to === undefined
+      &&
+      req.body.status_text === undefined
+      &&
+      req.body.open === undefined
+    ) {
+      return res.json({ error: 'no update field(s) sent', '_id': _id });
+    }
 
     let issue_title = (req.body.issue_title !== undefined ? req.body.issue_title : '');
     let issue_text = (req.body.issue_text !== undefined ? req.body.issue_text : '');
@@ -144,9 +157,15 @@ module.exports = function(app) {
           { returnOriginal: false }, // Return updated object after modify
           function(error, result) {
             if (result.ok === 1 && result.value !== null) {
-              return res.send('successfully updated');
+              return res.json({
+                'result': 'successfully updated',
+                '_id': _id
+              });
             } else {
-              return res.send('could not update ' + _id);
+              return res.json({
+                'error': 'could not update',
+                '_id': _id
+              });
             }
             // return res.json(result.value);
           }
@@ -158,7 +177,7 @@ module.exports = function(app) {
     var project = req.params.project;
 
     if (req.body._id === undefined || req.body._id === '') {
-      return res.json({ error: '_id error' });
+      return res.json({ error: 'missing _id' });
     }
 
     let _id = req.body._id;
@@ -175,9 +194,15 @@ module.exports = function(app) {
           },
           function(error, result) {
             if (result.ok === 1 && result.value !== null) {
-              return res.send('deleted ' + _id);
+              return res.json({
+                'result': 'successfully deleted',
+                '_id': _id
+              });
             } else {
-              return res.send('could not delete ' + _id);
+              return res.json({
+                'error': 'could not delete',
+                '_id': _id
+              });
             }
             // return res.json(result.value);
           }

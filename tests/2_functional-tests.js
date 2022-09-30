@@ -118,7 +118,7 @@ suite('Functional Tests', function() {
           assert.equal(res.status, 200);
           assert.isObject(res.body);
           assert.property(res.body, 'error');
-          assert.equal(res.body.error, 'no update field sent');
+          assert.equal(res.body.error, 'no update field(s) sent');
           done();
         });
       });
@@ -129,7 +129,7 @@ suite('Functional Tests', function() {
         .send({ _id: _id1, issue_title: 'Title (updated)' })
         .end(function(err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'successfully updated');
+          assert.equal(res.body.result, 'successfully updated');
           done();
         });
       });
@@ -140,7 +140,7 @@ suite('Functional Tests', function() {
         .send({ _id: _id2, issue_title: 'Title 2 (updated)', issue_text: 'Text 2 (updated)', open: false })
         .end(function(err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'successfully updated');
+          assert.equal(res.body.result, 'successfully updated');
           done();
         });
       });
@@ -227,7 +227,7 @@ suite('Functional Tests', function() {
           assert.equal(res.status, 200);
           assert.isObject(res.body);
           assert.property(res.body, 'error');
-          assert.equal(res.body.error, '_id error');
+          assert.equal(res.body.error, 'missing _id');
           done();
         });
       });
@@ -238,7 +238,8 @@ suite('Functional Tests', function() {
         .send({ _id: _id2 })
         .end(function(err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'deleted ' + _id2);
+          assert.equal(res.body.result, 'successfully deleted');
+          assert.equal(res.body._id, _id2);
           done();
         });
       });
