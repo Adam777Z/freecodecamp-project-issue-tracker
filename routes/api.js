@@ -92,12 +92,11 @@ module.exports = function(app) {
           updated_on: date,
           open: true
         };
-        
+
         db.db().collection('issuetracker').insertOne(
           obj,
           function(err, doc) {
-            obj['_id'] = doc['insertedId'];
-            return res.json(obj);
+            return res.json({ '_id': doc['insertedId'], ...obj });
           }
         );
       }
