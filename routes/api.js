@@ -81,19 +81,23 @@ module.exports = function(app) {
         // console.log('Database error: ' + err);
         return res.json({ error: 'error' });
       } else {
+        let obj = {
+          project: project,
+          issue_title: issue_title,
+          issue_text: issue_text,
+          created_by: created_by,
+          assigned_to: assigned_to,
+          status_text: status_text,
+          created_on: date,
+          updated_on: date,
+          open: true
+        };
+        
         db.db().collection('issuetracker').insertOne(
-          {
-            project: project,
-            issue_title: issue_title,
-            issue_text: issue_text,
-            created_by: created_by,
-            assigned_to: assigned_to,
-            status_text: status_text,
-            created_on: date,
-            updated_on: date,
-            open: true
-          }, function(err, doc) {
-            return res.json(doc['ops'][0]);
+          obj,
+          function(err, doc) {
+            obj['_id'] = doc['insertedId'];
+            return res.json(obj);
           }
         );
       }
@@ -143,9 +147,9 @@ module.exports = function(app) {
           { returnOriginal: false }, // Return updated object after modify
           function(error, result) {
             if (result.ok === 1 && result.value !== null) {
-              return res.json('successfully updated');
+              return res.send('successfully updated');
             } else {
-              return res.json('could not update ' + _id);
+              return res.send('could not update ' + _id);
             }
             // return res.json(result.value);
           }
@@ -174,9 +178,9 @@ module.exports = function(app) {
           },
           function(error, result) {
             if (result.ok === 1 && result.value !== null) {
-              return res.json('deleted ' + _id);
+              return res.send('deleted ' + _id);
             } else {
-              return res.json('could not delete ' + _id);
+              return res.send('could not delete ' + _id);
             }
             // return res.json(result.value);
           }
