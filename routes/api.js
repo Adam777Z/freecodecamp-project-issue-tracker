@@ -55,16 +55,14 @@ module.exports = function(app) {
     });
   })
   .post(function(req, res) {
-    if (req.body.issue_title === undefined || req.body.issue_title === '') {
-      return res.json({ error: 'Title is required' });
-    }
-
-    if (req.body.issue_text === undefined || req.body.issue_text === '') {
-      return res.json({ error: 'Text is required' });
-    }
-
-    if (req.body.created_by === undefined || req.body.created_by === '') {
-      return res.json({ error: 'Created by is required' });
+    if (
+      req.body.issue_title === undefined || req.body.issue_title === ''
+      ||
+      req.body.issue_text === undefined || req.body.issue_text === ''
+      ||
+      req.body.created_by === undefined || req.body.created_by === ''
+    ) {
+      return res.json({ error: 'required field(s) missing' });
     }
 
     var project = req.params.project;
