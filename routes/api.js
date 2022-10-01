@@ -37,10 +37,12 @@ module.exports = function(app) {
 
     if (req.query.updated_on !== undefined) { searchQuery['updated_on'] = new Date(req.query.updated_on); }
 
-    if (req.query.open !== undefined && req.query.open === 'true') {
-      searchQuery['open'] = true;
-    } else if (req.query.open !== undefined && req.query.open === 'false') {
-      searchQuery['open'] = false;
+    if (req.query.open !== undefined) {
+      if (req.query.open === 'true') {
+        searchQuery['open'] = true;
+      } else if (req.query.open === 'false') {
+        searchQuery['open'] = false;
+      }
     }
 
     MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
@@ -122,17 +124,43 @@ module.exports = function(app) {
       &&
       req.body.open === undefined
     ) {
-      return res.json({ error: 'no update field(s) sent', '_id': _id });
+      return res.json({
+        'error': 'no update field(s) sent',
+        '_id': _id
+      });
     }
 
-    let issue_title = (req.body.issue_title !== undefined ? req.body.issue_title : '');
-    let issue_text = (req.body.issue_text !== undefined ? req.body.issue_text : '');
-    let created_by = (req.body.created_by !== undefined ? req.body.created_by : '');
-    let assigned_to = (req.body.assigned_to !== undefined ? req.body.assigned_to : '');
-    let status_text = (req.body.status_text !== undefined ? req.body.status_text : '');
-    let open = (req.body.open === undefined ? true : false);
+    let set_obj = {};
 
-    let date = new Date();
+    if (req.body.issue_title !== undefined) {
+      set_obj['issue_title'] = req.body.issue_title;
+    }
+    
+    if (req.body.issue_text !== undefined) {
+      set_obj['issue_text'] = req.body.issue_text;
+    }
+    
+    if (req.body.created_by !== undefined) {
+      set_obj['created_by'] = req.body.created_by;
+    }
+    
+    if (req.body.assigned_to !== undefined) {
+      set_obj['assigned_to'] = req.body.assigned_to;
+    }
+    
+    if (req.body.status_text !== undefined) {
+      set_obj['status_text'] = req.body.status_text;
+    }
+
+    set_obj['updated_on'] = new Date();
+
+    if (req.body.open !== undefined) {
+      if (req.body.open === 'true') {
+        set_obj['open'] = true;
+      } else if (req.body.open === 'false') {
+        set_obj['open'] = false;
+      }
+    }
 
     MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
       if (err) {
@@ -144,16 +172,7 @@ module.exports = function(app) {
             project: project,
             _id: new ObjectId(_id)
           },
-          { $set: {
-              issue_title: issue_title,
-              issue_text: issue_text,
-              created_by: created_by,
-              assigned_to: assigned_to,
-              status_text: status_text,
-              updated_on: date,
-              open: open
-            }
-          },
+          { $set: set_obj },
           { returnOriginal: false }, // Return updated object after modify
           function(error, result) {
             if (result.ok === 1 && result.value !== null) {
