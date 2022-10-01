@@ -173,7 +173,7 @@ module.exports = function(app) {
             _id: new ObjectId(_id)
           },
           { $set: set_obj },
-          { returnOriginal: false }, // Return updated object after modify
+          { returnDocument: 'after' }, // Return the updated document
           function(error, result) {
             if (result.ok === 1 && result.value !== null) {
               return res.json({
