@@ -14,48 +14,44 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row">
-			<div class="col">
-				<div class="jumbotron p-4">
-					<div class="container">
-						<header>
-							<h1 id="projectTitle" class="text-center"></h1>
-						</header>
+		<div class="p-4 my-4 bg-light rounded-3">
+			<div class="row">
+				<div class="col">
+					<header>
+						<h1 id="projectTitle" class="text-center"></h1>
+					</header>
 
-						<div class="row text-center justify-content-center">
-							<div class="col-6">
-								<div id="submitNewIssue">
-									<h3>Submit a new issue:</h3>
-									<form id="newIssue" method="post" action="/api/">
-										<div class="form-group mb-0">
-											<input class="form-control mb-2" type="text" name="issue_title" placeholder="Title *" required>
-											<textarea class="form-control mb-2" name="issue_text" placeholder="Text *" required></textarea>
-											<div class="row mb-2">
-												<div class="col pr-1">
-													<input class="form-control" type="text" name="created_by" placeholder="Created by *" required>
-												</div>
-												<div class="col pl-1 pr-1">
-													<input class="form-control" type="text" name="assigned_to" placeholder="Assigned to">
-												</div>
-												<div class="col pl-1">
-													<input class="form-control" type="text" name="status_text" placeholder="Status text">
-												</div>
-											</div>
+					<div class="row text-center justify-content-center">
+						<div class="col-6">
+							<div id="submitNewIssue">
+								<h3>Submit a new issue:</h3>
+								<form id="newIssue" method="post" action="/api/">
+									<input class="form-control mb-2" type="text" name="issue_title" placeholder="Title *" required>
+									<textarea class="form-control mb-2" name="issue_text" placeholder="Text *" required></textarea>
+									<div class="row mb-2">
+										<div class="col pr-1">
+											<input class="form-control" type="text" name="created_by" placeholder="Created by *" required>
 										</div>
-										<button class="btn btn-primary" type="submit">Submit Issue</button>
-									</form>
-								</div>
+										<div class="col pl-1 pr-1">
+											<input class="form-control" type="text" name="assigned_to" placeholder="Assigned to">
+										</div>
+										<div class="col pl-1">
+											<input class="form-control" type="text" name="status_text" placeholder="Status text">
+										</div>
+									</div>
+									<button class="btn btn-primary" type="submit">Submit Issue</button>
+								</form>
 							</div>
 						</div>
-
-						<hr>
-
-						<div id="issueDisplay" class="row justify-content-center"></div>
-
-						<hr class="mt-0">
-
-						<div class="footer text-center">by <a href="https://www.freecodecamp.org" target="_blank">freeCodeCamp</a> (ISQA4) & <a href="https://www.freecodecamp.org/adam777" target="_blank">Adam</a> | <a href="https://github.com/Adam777Z/freecodecamp-project-issue-tracker" target="_blank">GitHub</a></div>
 					</div>
+
+					<hr>
+
+					<div id="issueDisplay" class="row justify-content-center"></div>
+
+					<hr class="mt-0">
+
+					<div class="footer text-center">by <a href="https://www.freecodecamp.org" target="_blank">freeCodeCamp</a> (ISQA4) & <a href="https://www.freecodecamp.org/adam777" target="_blank">Adam</a> | <a href="https://github.com/Adam777Z/freecodecamp-project-issue-tracker" target="_blank">GitHub</a></div>
 				</div>
 			</div>
 		</div>
@@ -105,7 +101,7 @@
 										'<div class="col">',
 											'<a href="#" class="btn btn-dark closeIssue" id="' + ele._id + '">Close issue</a>',
 										'</div>',
-										'<div class="col text-right">',
+										'<div class="col text-end">',
 											'<a href="#" class="btn btn-danger deleteIssue" id="' + ele._id + '">Delete issue</a>',
 										'</div>',
 									'</div>',
