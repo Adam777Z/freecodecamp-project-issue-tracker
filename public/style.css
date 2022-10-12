@@ -25,7 +25,3 @@ body {
 code {
 	word-wrap: break-word;
 }
-
-.font-weight-semibold {
-	font-weight: 600 !important;
-}
