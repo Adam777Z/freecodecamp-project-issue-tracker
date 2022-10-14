@@ -53,7 +53,7 @@
 						<div class="row text-center">
 							<div class="col">
 								<h3>Submit issue on <i>apitest</i></h3>
-								<form id="testForm">
+								<form class="test-form" method="post">
 									<input type="text" name="issue_title" class="form-control mb-2" placeholder="Title *" required>
 									<textarea class="form-control mb-2" name="issue_text" placeholder="Text *" required></textarea>
 									<input type="text" name="created_by" class="form-control mb-2" placeholder="Created by *" required>
@@ -65,7 +65,7 @@
 							<div class="col">
 								<h3>Update issue on <i>apitest</i></h3>
 								<h4>(Change any or all to update issue on the _id supplied)</h4>
-								<form id="testForm2">
+								<form class="test-form" method="put">
 									<input type="text" name="_id" class="form-control mb-2" placeholder="_id *" required>
 									<input type="text" name="issue_title" class="form-control mb-2" placeholder="Title">
 									<textarea class="form-control mb-2" name="issue_text" placeholder="Text"></textarea>
@@ -81,7 +81,7 @@
 							</div>
 							<div class="col">
 								<h3>Delete issue on <i>apitest</i></h3>
-								<form id="testForm3">
+								<form class="test-form" method="delete">
 									<input type="text" name="_id" class="form-control mb-2" placeholder="_id *" required>
 									<button type="submit" class="btn btn-danger">Delete Issue</button>
 								</form>
@@ -100,69 +100,31 @@
 
 	<script>
 	document.addEventListener('DOMContentLoaded', (event) => {
-		document.querySelector('#testForm').addEventListener('submit', (event2) => {
-			event2.preventDefault();
+		document.querySelectorAll('.test-form').forEach((e) => {
+			e.addEventListener('submit', (event2) => {
+				event2.preventDefault();
 
-			fetch('/api/issues/apitest', {
-				'method': 'POST',
-				'body': new URLSearchParams(new FormData(event2.target))
-			})
-			.then((response) => {
-				if (response['ok']) {
-					return response.json();
-				} else {
-					throw 'Error';
-				}
-			})
-			.then((data) => {
-				document.querySelector('#jsonResult').textContent = JSON.stringify(data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-		});
+				fetch('/api/issues/apitest', {
+					'method': event2.target.getAttribute('method').toUpperCase(),
+					'body': new URLSearchParams(new FormData(event2.target))
+				})
+				.then((response) => {
+					if (response['ok']) {
+						return response.json();
+					} else {
+						throw 'Error';
+					}
+				})
+				.then((data) => {
+					if (data['error'] === undefined) {
+						event2.target.reset();
+					}
 
-		document.querySelector('#testForm2').addEventListener('submit', (event2) => {
-			event2.preventDefault();
-
-			fetch('/api/issues/apitest', {
-				'method': 'PUT',
-				'body': new URLSearchParams(new FormData(event2.target))
-			})
-			.then((response) => {
-				if (response['ok']) {
-					return response.json();
-				} else {
-					throw 'Error';
-				}
-			})
-			.then((data) => {
-				document.querySelector('#jsonResult').textContent = JSON.stringify(data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-		});
-
-		document.querySelector('#testForm3').addEventListener('submit', (event2) => {
-			event2.preventDefault();
-
-			fetch('/api/issues/apitest', {
-				'method': 'DELETE',
-				'body': new URLSearchParams(new FormData(event2.target))
-			})
-			.then((response) => {
-				if (response['ok']) {
-					return response.json();
-				} else {
-					throw 'Error';
-				}
-			})
-			.then((data) => {
-				document.querySelector('#jsonResult').textContent = JSON.stringify(data);
-			})
-			.catch((error) => {
-				console.log(error);
+					document.querySelector('#jsonResult').textContent = JSON.stringify(data);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 			});
 		});
 	});
