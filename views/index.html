@@ -9,8 +9,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="/public/bootstrap.min.css">
 	<link rel="stylesheet" href="/public/style.css">
-	<!-- Your web app is https, so your scripts need to be too -->
-	<script src="/public/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -101,39 +99,71 @@
 	</div>
 
 	<script>
-	$(function() {
-		$('#testForm').submit(function(e) {
-			$.ajax({
-				url: '/api/issues/apitest',
-				type: 'post',
-				data: $('#testForm').serialize(),
-				success: function(data) {
-					$('#jsonResult').text(JSON.stringify(data));
+	document.addEventListener('DOMContentLoaded', (event) => {
+		document.querySelector('#testForm').addEventListener('submit', (event2) => {
+			event2.preventDefault();
+
+			fetch('/api/issues/apitest', {
+				'method': 'POST',
+				'body': new URLSearchParams(new FormData(event2.target))
+			})
+			.then((response) => {
+				if (response['ok']) {
+					return response.json();
+				} else {
+					throw 'Error';
 				}
+			})
+			.then((data) => {
+				document.querySelector('#jsonResult').textContent = JSON.stringify(data);
+			})
+			.catch((error) => {
+				console.log(error);
 			});
-			e.preventDefault();
 		});
-		$('#testForm2').submit(function(e) {
-			$.ajax({
-				url: '/api/issues/apitest',
-				type: 'put',
-				data: $('#testForm2').serialize(),
-				success: function(data) {
-					$('#jsonResult').text(JSON.stringify(data));
+
+		document.querySelector('#testForm2').addEventListener('submit', (event2) => {
+			event2.preventDefault();
+
+			fetch('/api/issues/apitest', {
+				'method': 'PUT',
+				'body': new URLSearchParams(new FormData(event2.target))
+			})
+			.then((response) => {
+				if (response['ok']) {
+					return response.json();
+				} else {
+					throw 'Error';
 				}
+			})
+			.then((data) => {
+				document.querySelector('#jsonResult').textContent = JSON.stringify(data);
+			})
+			.catch((error) => {
+				console.log(error);
 			});
-			e.preventDefault();
 		});
-		$('#testForm3').submit(function(e) {
-			$.ajax({
-				url: '/api/issues/apitest',
-				type: 'delete',
-				data: $('#testForm3').serialize(),
-				success: function(data) {
-					$('#jsonResult').text(JSON.stringify(data));
+
+		document.querySelector('#testForm3').addEventListener('submit', (event2) => {
+			event2.preventDefault();
+
+			fetch('/api/issues/apitest', {
+				'method': 'DELETE',
+				'body': new URLSearchParams(new FormData(event2.target))
+			})
+			.then((response) => {
+				if (response['ok']) {
+					return response.json();
+				} else {
+					throw 'Error';
 				}
+			})
+			.then((data) => {
+				document.querySelector('#jsonResult').textContent = JSON.stringify(data);
+			})
+			.catch((error) => {
+				console.log(error);
 			});
-			e.preventDefault();
 		});
 	});
 	</script>
