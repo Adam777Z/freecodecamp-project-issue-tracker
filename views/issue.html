@@ -73,56 +73,54 @@
 			}
 		})
 		.then((data) => {
-			let issues = [];
+			let html = '';
 
 			data.forEach((elem) => {
 				let openstatus;
 
 				(elem['open']) ? openstatus = 'open': openstatus = 'closed';
 
-				let single = [
-					'<div class="col-8 mb-3">',
-						'<div class="card issue ' + openstatus + '">',
-							'<h5 class="card-header id">ID: ' + elem['_id'] + '</h5>',
-							'<div class="card-body">',
-								'<h5 class="card-title">' + elem['issue_title'] + ' (' + openstatus + ')</h5>',
-								'<p class="card-text">' + elem['issue_text'] + '</p>',
-								'<p class="card-text">' + elem['status_text'] + '</p>',
-							'</div>',
-							'<div class="card-footer text-muted">',
-								'<div class="row">',
-									'<div class="col">',
-										'<span class="fw-semibold">Created by:</span> ' + elem['created_by'],
-									'</div>',
-									'<div class="col">',
-										'<span class="fw-semibold">Assigned to:</span> ' + elem['assigned_to'],
-									'</div>',
-								'</div>',
-								'<div class="row mb-2">',
-									'<div class="col">',
-										'<span class="fw-semibold">Created on:</span> ' + elem['created_on'],
-									'</div>',
-									'<div class="col">',
-										'<span class="fw-semibold">Last updated:</span> ' + elem['updated_on'],
-									'</div>',
-								'</div>',
-								'<div class="row">',
-									'<div class="col">',
-										'<a href="#" class="btn btn-dark closeIssue" id="' + elem['_id'] + '">Close Issue</a>',
-									'</div>',
-									'<div class="col d-flex justify-content-end">',
-										'<a href="#" class="btn btn-danger deleteIssue" id="' + elem['_id'] + '">Delete Issue</a>',
-									'</div>',
-								'</div>',
-							'</div>',
-						'</div>',
-					'</div>'
-				];
-
-				issues.push(single.join(''));
+				html += `
+				<div class="col-8 mb-3">
+					<div class="card issue ${openstatus}">
+						<h5 class="card-header id">ID: ${elem['_id']}</h5>
+						<div class="card-body">
+							<h5 class="card-title">${elem['issue_title']} (${openstatus})</h5>
+							<p class="card-text">${elem['issue_text']}</p>
+							<p class="card-text">${elem['status_text']}</p>
+						</div>
+						<div class="card-footer text-muted">
+							<div class="row">
+								<div class="col">
+									<span class="fw-semibold">Created by:</span> ${elem['created_by']}
+								</div>
+								<div class="col">
+									<span class="fw-semibold">Assigned to:</span> ${elem['assigned_to']}
+								</div>
+							</div>
+							<div class="row mb-2">
+								<div class="col">
+									<span class="fw-semibold">Created on:</span> ${elem['created_on']}
+								</div>
+								<div class="col">
+									<span class="fw-semibold">Last updated:</span> ${elem['updated_on']}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<a href="#" class="btn btn-dark closeIssue" id="${elem['_id']}">Close Issue</a>
+								</div>
+								<div class="col d-flex justify-content-end">
+									<a href="#" class="btn btn-danger deleteIssue" id="${elem['_id']}">Delete Issue</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				`;
 			});
 
-			document.querySelector('#issueDisplay').innerHTML = issues.join('');
+			document.querySelector('#issueDisplay').innerHTML = html;
 		})
 		.catch((error) => {
 			console.log(error);
