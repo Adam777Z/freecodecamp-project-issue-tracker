@@ -21,25 +21,23 @@
 
 					<div class="row text-center justify-content-center">
 						<div class="col-6">
-							<div id="submitNewIssue">
-								<h3>Submit a new issue:</h3>
-								<form id="newIssue" method="post" action="/api/">
-									<input class="form-control mb-2" type="text" name="issue_title" placeholder="Title *" required>
-									<textarea class="form-control mb-2" name="issue_text" placeholder="Text *" required></textarea>
-									<div class="row mb-2">
-										<div class="col pr-1">
-											<input class="form-control" type="text" name="created_by" placeholder="Created by *" required>
-										</div>
-										<div class="col pl-1 pr-1">
-											<input class="form-control" type="text" name="assigned_to" placeholder="Assigned to">
-										</div>
-										<div class="col pl-1">
-											<input class="form-control" type="text" name="status_text" placeholder="Status text">
-										</div>
+							<h3>Submit a new issue:</h3>
+							<form id="newIssue" method="post" action="/api/">
+								<input class="form-control mb-2" type="text" name="issue_title" placeholder="Title *" required>
+								<textarea class="form-control mb-2" name="issue_text" placeholder="Text *" required></textarea>
+								<div class="row mb-2">
+									<div class="col pr-1">
+										<input class="form-control" type="text" name="created_by" placeholder="Created by *" required>
 									</div>
-									<button class="btn btn-primary" type="submit">Submit Issue</button>
-								</form>
-							</div>
+									<div class="col pl-1 pr-1">
+										<input class="form-control" type="text" name="assigned_to" placeholder="Assigned to">
+									</div>
+									<div class="col pl-1">
+										<input class="form-control" type="text" name="status_text" placeholder="Status text">
+									</div>
+								</div>
+								<button class="btn btn-primary" type="submit">Submit Issue</button>
+							</form>
 						</div>
 					</div>
 
@@ -108,10 +106,17 @@
 							</div>
 							<div class="row">
 								<div class="col">
-									<a href="#" class="btn btn-dark closeIssue" id="${elem['_id']}">Close Issue</a>
+									<form class="issue-form" method="put">
+										<input type="hidden" name="_id" value="${elem['_id']}">
+										<input type="hidden" name="open" value="false">
+										<input type="submit" class="btn btn-dark" value="Close Issue">
+									</form>
 								</div>
 								<div class="col d-flex justify-content-end">
-									<a href="#" class="btn btn-danger deleteIssue" id="${elem['_id']}">Delete Issue</a>
+									<form class="issue-form" method="delete">
+										<input type="hidden" name="_id" value="${elem['_id']}">
+										<input type="submit" class="btn btn-danger" value="Delete Issue">
+									</form>
 								</div>
 							</div>
 						</div>
@@ -143,6 +148,10 @@
 				}
 			})
 			.then((data) => {
+				if (data['error'] === undefined) {
+					event2.target.reset();
+				}
+
 				window.location.reload();
 			})
 			.catch((error) => {
@@ -150,41 +159,13 @@
 			});
 		});
 
-		document.querySelector('#issueDisplay').addEventListener('click', (event2) => {
-			if (event2.target.classList.contains('closeIssue')) {
+		document.querySelector('#issueDisplay').addEventListener('submit', (event2) => {
+			if (event2.target.classList.contains('issue-form')) {
 				event2.preventDefault();
 
 				fetch(url, {
-					'method': 'PUT',
-					'body': new URLSearchParams({
-						'_id': event2.target.getAttribute('id'),
-						'open': false
-					})
-				})
-				.then((response) => {
-					if (response['ok']) {
-						return response.json();
-					} else {
-						throw 'Error';
-					}
-				})
-				.then((data) => {
-					alert(data['error'] !== undefined ? data['error'] : data['result']);
-					window.location.reload();
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-			}
-
-			if (event2.target.classList.contains('deleteIssue')) {
-				event2.preventDefault();
-
-				fetch(url, {
-					'method': 'DELETE',
-					'body': new URLSearchParams({
-						'_id': event2.target.getAttribute('id')
-					})
+					'method': event2.target.getAttribute('method').toUpperCase(),
+					'body': new URLSearchParams(new FormData(event2.target))
 				})
 				.then((response) => {
 					if (response['ok']) {
