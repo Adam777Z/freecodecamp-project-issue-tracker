@@ -20,7 +20,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(helmet({
-	contentSecurityPolicy: false
+	contentSecurityPolicy: false,
+	frameguard: false
 }));
 
 // Sample front-end
