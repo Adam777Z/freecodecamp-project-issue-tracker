@@ -28,7 +28,7 @@ suite('Functional Tests', function () {
 					issue_text: 'Text',
 					created_by: 'Functional Test - Every field filled in',
 					assigned_to: 'Chai and Mocha',
-					status_text: 'In QA'
+					status_text: 'In QA',
 				})
 				.end(function (err, res) {
 					assert.equal(res.status, 200);
@@ -133,7 +133,9 @@ suite('Functional Tests', function () {
 		test('One filter', function (done) {
 			chai.request(server)
 				.get('/api/issues/test')
-				.query({ open: true })
+				.query({
+					open: true,
+				})
 				.end(function (err, res) {
 					assert.equal(res.status, 200);
 					assert.isArray(res.body);
@@ -155,7 +157,11 @@ suite('Functional Tests', function () {
 		test('Multiple filters (test for multiple fields you know will be in the db for a return)', function (done) {
 			chai.request(server)
 				.get('/api/issues/test')
-				.query({ issue_title: 'Title', issue_text: 'Text', open: true })
+				.query({
+					issue_title: 'Title',
+					issue_text: 'Text',
+					open: true,
+				})
 				.end(function (err, res) {
 					assert.equal(res.status, 200);
 					assert.isArray(res.body);
@@ -183,7 +189,10 @@ suite('Functional Tests', function () {
 		test('One field to update', function (done) {
 			chai.request(server)
 				.put('/api/issues/test')
-				.send({ _id: _id1, issue_title: 'Title (updated)' })
+				.send({
+					_id: _id1,
+					issue_title: 'Title (updated)',
+				})
 				.end(function (err, res) {
 					assert.equal(res.status, 200);
 					assert.equal(res.body.result, 'successfully updated');
@@ -194,7 +203,12 @@ suite('Functional Tests', function () {
 		test('Multiple fields to update', function (done) {
 			chai.request(server)
 				.put('/api/issues/test')
-				.send({ _id: _id2, issue_title: 'Title 2 (updated)', issue_text: 'Text 2 (updated)', open: false })
+				.send({
+					_id: _id2,
+					issue_title: 'Title 2 (updated)',
+					issue_text: 'Text 2 (updated)',
+					open: false,
+				})
 				.end(function (err, res) {
 					assert.equal(res.status, 200);
 					assert.equal(res.body.result, 'successfully updated');
@@ -205,7 +219,9 @@ suite('Functional Tests', function () {
 		test('Update an issue with missing _id', function (done) {
 			chai.request(server)
 				.put('/api/issues/test')
-				.send({ open: false })
+				.send({
+					open: false,
+				})
 				.end(function (err, res) {
 					assert.equal(res.status, 200);
 					assert.isObject(res.body);
@@ -218,7 +234,9 @@ suite('Functional Tests', function () {
 		test('No update field sent', function (done) {
 			chai.request(server)
 				.put('/api/issues/test')
-				.send({ _id: _id1 })
+				.send({
+					_id: _id1,
+				})
 				.end(function (err, res) {
 					assert.equal(res.status, 200);
 					assert.isObject(res.body);
@@ -231,7 +249,10 @@ suite('Functional Tests', function () {
 		test('Update an issue with an invalid _id', function (done) {
 			chai.request(server)
 				.put('/api/issues/test')
-				.send({ _id: '000000000000000000000000', open: false })
+				.send({
+					_id: '000000000000000000000000',
+					open: false,
+				})
 				.end(function (err, res) {
 					assert.equal(res.status, 200);
 					assert.isObject(res.body);
@@ -249,7 +270,9 @@ suite('Functional Tests', function () {
 		test('Valid _id', function (done) {
 			chai.request(server)
 				.delete('/api/issues/test')
-				.send({ _id: _id2 })
+				.send({
+					_id: _id2,
+				})
 				.end(function (err, res) {
 					assert.equal(res.status, 200);
 					assert.equal(res.body.result, 'successfully deleted');
@@ -261,7 +284,9 @@ suite('Functional Tests', function () {
 		test('Invalid _id', function (done) {
 			chai.request(server)
 				.delete('/api/issues/test')
-				.send({ _id: '000000000000000000000000' })
+				.send({
+					_id: '000000000000000000000000',
+				})
 				.end(function (err, res) {
 					assert.equal(res.status, 200);
 					assert.isObject(res.body);
